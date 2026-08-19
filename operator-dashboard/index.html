@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Busly Operator Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="operator-app">
+      <aside class="sidebar" aria-label="Operator navigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          <div>
+            <strong>Busly</strong>
+            <span>Operator</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item active" type="button" data-section="overview">
+            <span aria-hidden="true">01</span>
+            Overview
+          </button>
+          <button class="nav-item" type="button" data-section="register-bus">
+            <span aria-hidden="true">02</span>
+            Register Bus
+          </button>
+          <button class="nav-item" type="button" data-section="schedule-trip">
+            <span aria-hidden="true">03</span>
+            Schedule Trips
+          </button>
+          <button class="nav-item" type="button" data-section="bookings">
+            <span aria-hidden="true">04</span>
+            Bookings
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <strong>Frontend only</strong>
+          <span>Forms update local dashboard previews without backend calls.</span>
+        </div>
+      </aside>
+
+      <main class="dashboard">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Operator Control Center</p>
+            <h1>Manage buses, schedules, and passenger activity.</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" type="button" aria-label="Notifications">!</button>
+            <button class="primary-button" type="button" data-section-trigger="register-bus">Add Bus</button>
+          </div>
+        </header>
+
+        <section class="section-panel active" id="overview" aria-labelledby="overview-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Today</p>
+              <h2 id="overview-title">Operations overview</h2>
+            </div>
+            <button class="secondary-button" type="button" data-section-trigger="schedule-trip">Create Schedule</button>
+          </div>
+
+          <div class="metric-grid" aria-label="Operator metrics">
+            <article class="metric-card">
+              <span>Total buses</span>
+              <strong id="total-buses">4</strong>
+              <small>2 AC sleeper, 2 seater</small>
+            </article>
+            <article class="metric-card">
+              <span>Scheduled trips</span>
+              <strong id="total-trips">8</strong>
+              <small>5 active routes this week</small>
+            </article>
+            <article class="metric-card">
+              <span>Seat occupancy</span>
+              <strong>74%</strong>
+              <small>Across upcoming trips</small>
+            </article>
+            <article class="metric-card">
+              <span>Open bookings</span>
+              <strong>126</strong>
+              <small>18 check-ins pending</small>
+            </article>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel">
+              <div class="panel-title">
+                <h3>Upcoming schedules</h3>
+                <span>Live preview</span>
+              </div>
+              <div class="schedule-list" id="schedule-list"></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-title">
+                <h3>Fleet health</h3>
+                <span>Sample data</span>
+              </div>
+              <div class="fleet-list">
+                <div class="fleet-row">
+                  <span>Insurance renewals</span>
+                  <strong>2 due soon</strong>
+                </div>
+                <div class="fleet-row">
+                  <span>Maintenance checks</span>
+                  <strong>3 complete</strong>
+                </div>
+                <div class="fleet-row">
+                  <span>Driver assignments</span>
+                  <strong>6 assigned</strong>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section-panel" id="register-bus" aria-labelledby="register-bus-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Fleet setup</p>
+              <h2 id="register-bus-title">Register a bus</h2>
+            </div>
+          </div>
+
+          <form class="form-layout" id="bus-form">
+            <label>
+              Bus name
+              <input name="busName" type="text" placeholder="Royal Express" required />
+            </label>
+            <label>
+              Registration number
+              <input name="registration" type="text" placeholder="MH 12 AB 3456" required />
+            </label>
+            <label>
+              Bus type
+              <select name="busType" required>
+                <option value="">Select bus type</option>
+                <option>AC Sleeper</option>
+                <option>AC Seater</option>
+                <option>Non-AC Sleeper</option>
+                <option>Volvo Multi-Axle</option>
+              </select>
+            </label>
+            <label>
+              Total seats
+              <input name="seats" type="number" min="10" max="80" placeholder="42" required />
+            </label>
+            <label>
+              Driver name
+              <input name="driver" type="text" placeholder="Amit Sharma" required />
+            </label>
+            <label>
+              Contact number
+              <input name="contact" type="tel" placeholder="+91 98765 43210" required />
+            </label>
+            <fieldset>
+              <legend>Amenities</legend>
+              <label class="checkbox"><input type="checkbox" name="amenities" value="Wi-Fi" /> Wi-Fi</label>
+              <label class="checkbox"><input type="checkbox" name="amenities" value="Charging" /> Charging</label>
+              <label class="checkbox"><input type="checkbox" name="amenities" value="Blanket" /> Blanket</label>
+              <label class="checkbox"><input type="checkbox" name="amenities" value="Water Bottle" /> Water Bottle</label>
+            </fieldset>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Register Bus</button>
+              <button class="secondary-button" type="reset">Clear</button>
+            </div>
+          </form>
+
+          <article class="panel">
+            <div class="panel-title">
+              <h3>Registered buses</h3>
+              <span id="fleet-count">4 buses</span>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Bus</th>
+                    <th>Registration</th>
+                    <th>Type</th>
+                    <th>Seats</th>
+                    <th>Driver</th>
+                  </tr>
+                </thead>
+                <tbody id="bus-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="section-panel" id="schedule-trip" aria-labelledby="schedule-trip-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Recurring routes</p>
+              <h2 id="schedule-trip-title">Schedule regular trips</h2>
+            </div>
+          </div>
+
+          <form class="form-layout" id="trip-form">
+            <label>
+              Select bus
+              <select name="bus" id="bus-select" required></select>
+            </label>
+            <label>
+              From
+              <input name="from" type="text" placeholder="Pune" required />
+            </label>
+            <label>
+              To
+              <input name="to" type="text" placeholder="Bengaluru" required />
+            </label>
+            <label>
+              Departure time
+              <input name="departure" type="time" required />
+            </label>
+            <label>
+              Arrival time
+              <input name="arrival" type="time" required />
+            </label>
+            <label>
+              Base fare
+              <input name="fare" type="number" min="100" placeholder="899" required />
+            </label>
+            <label>
+              Starts on
+              <input name="startDate" type="date" required />
+            </label>
+            <label>
+              Repeat
+              <select name="repeat" required>
+                <option>Daily</option>
+                <option>Weekdays</option>
+                <option>Weekends</option>
+                <option>Weekly</option>
+              </select>
+            </label>
+            <fieldset>
+              <legend>Trip status</legend>
+              <label class="radio"><input type="radio" name="status" value="Active" checked /> Active</label>
+              <label class="radio"><input type="radio" name="status" value="Draft" /> Draft</label>
+            </fieldset>
+            <div class="form-actions">
+              <button class="primary-button" type="submit">Add Schedule</button>
+              <button class="secondary-button" type="reset">Clear</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="section-panel" id="bookings" aria-labelledby="bookings-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Passenger functions</p>
+              <h2 id="bookings-title">Bookings and user activity</h2>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <article class="panel">
+              <div class="panel-title">
+                <h3>Recent bookings</h3>
+                <span>Frontend sample</span>
+              </div>
+              <div class="booking-list">
+                <div class="booking-row">
+                  <span>BK-1048</span>
+                  <strong>Pune to Bengaluru</strong>
+                  <small>2 seats | Paid</small>
+                </div>
+                <div class="booking-row">
+                  <span>BK-1049</span>
+                  <strong>Mumbai to Goa</strong>
+                  <small>1 seat | Check-in pending</small>
+                </div>
+                <div class="booking-row">
+                  <span>BK-1050</span>
+                  <strong>Delhi to Jaipur</strong>
+                  <small>4 seats | Paid</small>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-title">
+                <h3>User support queue</h3>
+                <span>3 open</span>
+              </div>
+              <div class="support-list">
+                <button type="button">Seat change request</button>
+                <button type="button">Refund status follow-up</button>
+                <button type="button">Luggage policy question</button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

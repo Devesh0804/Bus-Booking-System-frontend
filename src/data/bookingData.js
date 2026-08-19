@@ -1,0 +1,32 @@
+export const mockBookings = [
+  {
+    id: 'BK1001',
+    passenger: 'Rahul Sharma',
+    trip: 'Indore to Bhopal',
+    date: '2026-08-20',
+    seat: 'A1',
+    amount: 700,
+    payment: 'Paid',
+    status: 'Confirmed',
+  },
+  {
+    id: 'BK1002',
+    passenger: 'Neha Verma',
+    trip: 'Indore to Ujjain',
+    date: '2026-08-21',
+    seat: 'B2',
+    amount: 350,
+    payment: 'Paid',
+    status: 'Confirmed',
+  },
+  {
+    id: 'BK1003',
+    passenger: 'Amit Jain',
+    trip: 'Indore to Bhopal',
+    date: '2026-08-20',
+    seat: 'C4',
+    amount: 700,
+    payment: 'Pending',
+    status: 'Pending',
+  },
+]
