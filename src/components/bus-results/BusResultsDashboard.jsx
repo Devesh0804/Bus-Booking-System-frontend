@@ -1,5 +1,9 @@
 import { Armchair, Clock, MapPin, Star, Wifi } from 'lucide-react'
 import Button from '../ui/Button'
+import BaseApiCaller from '../../utils/BaseApiCaller';
+import { useEffect } from 'react';
+import { useState } from 'react';
+const api = BaseApiCaller();
 
 const buses = [
   {
@@ -57,6 +61,56 @@ const buses = [
 ]
 
 function BusResultsDashboard({ searchDetails }) {
+
+  const [trips,setTrips] = useState([]);
+  const [seatPrice , setSeatPrice] = useState(0)
+  // console.log(searchDetails ? searchDetails : "");
+  // {from: 'Indore', to: 'Bhopal', date: '0206-06-04', passengers: '1'}
+
+  const params = new URLSearchParams({
+    from : searchDetails.from,
+    to : searchDetails.to,
+    date:searchDetails.date,
+    passengers:searchDetails.passengers
+  })
+
+  // console.log(params.toString());
+
+ useEffect(()=>{
+   async function fetchTrip(){
+    try {
+         const url = api.getURL(api.MODULE.TRIP_OPERATION,api.OPERATIONS.GETDATA)
+         
+         
+         
+         const response = await fetch(`${url}?${params.toString()}`,{
+          method :"GET"
+         })
+
+         if(!response.ok){
+          alert(response.message || "Invalid Entry" )
+         }
+
+         const FetchedTrips = await response.json();
+
+         const minPrice = Math.min(...FetchedTrips.seatPrice);
+  
+          setSeatPrice(minPrice)
+          setTrips(FetchedTrips.trips)
+
+     
+         
+       
+
+    } catch (error) {
+        alert(error)
+    }
+  }
+
+  fetchTrip();
+ },[])
+  
+  
   const filteredBuses = buses.filter((bus) => {
     const fromMatches =
       searchDetails.from.trim() === '' ||
@@ -85,7 +139,7 @@ function BusResultsDashboard({ searchDetails }) {
           </p>
         </div>
         <p className="text-sm font-semibold text-slate-700">
-          {visibleBuses.length} buses found
+          {trips.length} buses found
         </p>
       </div>
 
@@ -119,39 +173,39 @@ function BusResultsDashboard({ searchDetails }) {
         </aside>
 
         <div className="space-y-4">
-          {visibleBuses.map((bus) => (
+          {trips.map((bus,index) => (
             <article
-              key={bus.id}
+              key={index}
               className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-rose-200 hover:shadow-md sm:p-5"
             >
               <div className="grid gap-4 xl:grid-cols-[1.2fr_1fr_auto] xl:items-center">
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-lg font-bold text-slate-950">{bus.name}</h3>
+                    <h3 className="text-lg font-bold text-slate-950">{bus.busId.BusName}</h3>
                     <span className="rounded-full bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-700">
-                      {bus.type}
+                      {bus.busId.BusType}
                     </span>
                   </div>
                   <div className="mt-3 flex flex-wrap gap-3 text-sm text-slate-600">
-                    <Info icon={<Star className="h-4 w-4" />} text={`${bus.rating} rating`} />
-                    <Info icon={<Armchair className="h-4 w-4" />} text={`${bus.seats} seats left`} />
+                    <Info icon={<Star className="h-4 w-4" />} text={` 4.6 rating`} />
+                    <Info icon={<Armchair className="h-4 w-4" />} text={`20 seats left`} />
                     <Info icon={<Wifi className="h-4 w-4" />} text="WiFi available" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-                  <TimeBlock time={bus.startTime} place={bus.from} />
+                  <TimeBlock time={bus.departureTime} place={bus.routeId.source} />
                   <div className="text-center">
                     <Clock className="mx-auto h-4 w-4 text-slate-400" />
                     <p className="mt-1 text-xs font-semibold text-slate-500">{bus.duration}</p>
                   </div>
-                  <TimeBlock time={bus.endTime} place={bus.to} alignRight />
+                  <TimeBlock time={bus.arrivalTime} place={bus.routeId.destination} alignRight />
                 </div>
 
                 <div className="flex items-center justify-between gap-4 border-t border-slate-100 pt-4 xl:flex-col xl:items-end xl:border-t-0 xl:pt-0">
                   <div className="text-right">
                     <p className="text-xs text-slate-500">Starting from</p>
-                    <p className="text-2xl font-bold text-slate-950">Rs {bus.price}</p>
+                    <p className="text-2xl font-bold text-slate-950">Rs {seatPrice}</p>
                   </div>
                   <Button className="h-11 px-5">View seats</Button>
                 </div>

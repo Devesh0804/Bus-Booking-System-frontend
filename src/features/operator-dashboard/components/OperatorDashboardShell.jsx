@@ -11,6 +11,7 @@ import OperatorRegister from '../../../pages/operator/OperatorRegister'
 import Profile from '../../../pages/operator/Profile'
 import Reviews from '../../../pages/operator/Reviews'
 import RoutesPage from '../../../pages/operator/RoutesPage'
+import RouteEditPage from '../../../pages/operator/RouteEditPage'
 import SeatManagement from '../../../pages/operator/SeatManagement'
 import Settings from '../../../pages/operator/Settings'
 import TripDetails from '../../../pages/operator/TripDetails'
@@ -29,6 +30,7 @@ function OperatorDashboardShell() {
         <Route path="dashboard" element={<OperatorDashboardHome />} />
         <Route path="buses" element={<Buses />} />
         <Route path="routes" element={<RoutesPage />} />
+        <Route path="routes/:routeId/edit" element={<RouteEditPage />} />
         <Route path="trips" element={<Trips />} />
         <Route path="bookings" element={<Bookings />} />
         <Route path="reviews" element={<Reviews />} />

@@ -8,6 +8,8 @@ const  BaseApiCaller = ()=>{
 
     const MODULE = {
         BUS_OPERATION : "bus-operations",
+        ROUTE_OPERATION : "route-operations",
+        TRIP_OPERATION :"trip-operations"
 
     }
 
@@ -15,21 +17,15 @@ const  BaseApiCaller = ()=>{
 
     const OPERATIONS = {
         ADD:"save-data",
-        GETDATA:"get-data"
-
-
+        GETDATA:"get-data",
+        GETONE:"get-one",
+        UPDATE:"update"
     }
 
 
     const getURL = (module,operations,id)=>{
-         if(module,operations,id){
-             
-              
-              return `${BaseRoute}${module}/${operations}/${id}`
-            } 
-        else{
-            return `${BaseRoute}${module}/${operations}`
-            }
+        const url = operations ? `${BaseRoute}${module}/${operations}` : `${BaseRoute}${module}/    `;
+        return id ? `${url}/${id}` : url;
     }
 
       return{

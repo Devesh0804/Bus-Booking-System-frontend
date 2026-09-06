@@ -26,6 +26,9 @@ function SearchSection({ onSearch }) {
       date: journeyDate,
       passengers: passengerCount,
     })
+
+    
+    
   }
 
   return (
